@@ -75,6 +75,7 @@ def naive_fvs(G, k, F):
         while True:
             cycles = find_cycles(G)
             print(cycles)
+            #print(cycles)
             if len(cycles) == 0:
                 break
             cycle = cycles[0]
@@ -103,10 +104,10 @@ def naive_fvs(G, k, F):
 
 if __name__ =="__main__":
     
-    G = nk.Graph(100)
+    G = nk.Graph(10)
 
     # Aggiunta dei nodi
-    for i in range(100):
+    for i in range(10):
         G.addNode()
 
     # Aggiunta degli archi per formare cicli
@@ -115,12 +116,6 @@ if __name__ =="__main__":
     G.addEdge(2, 3)
     G.addEdge(3, 4)
     G.addEdge(4, 0)
-
-    G.addEdge(5, 6)
-    G.addEdge(6, 7)
-    G.addEdge(7, 8)
-    G.addEdge(8, 9)
-    G.addEdge(9, 5)
 
 
 

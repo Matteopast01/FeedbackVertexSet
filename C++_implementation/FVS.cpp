@@ -87,14 +87,14 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F  ) {
 	    		if (nodesCycle.size() == 0){
 	    			break;
 	    		}
-	    		for (int node : nodesCycle){
+	    		
+	    		int node = nodesCycle[0];
+    			if (F->find(node) == F->end()){
 
-	    			if (F->find(node) == F->end()){
-
-	    				myfvs.push_back(node);
-	    				graph->removeNode(node);
-	    			} 
-	    		}
+    				myfvs.push_back(node);
+    				graph->removeNode(node);
+    			} 
+	    		
 
 	    	}
 	    	if (myfvs.size()<=k){

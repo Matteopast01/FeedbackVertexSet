@@ -7,20 +7,19 @@ using namespace std;
 
 
 
-bool dfs(NetworKit::Graph* graph, int u, int parent, vector<bool> *visited, vector<int>& cycleNodes) {
-    (*visited)[u] = true;
+bool dfs( NetworKit::Graph* graph, int u, int parent, vector<bool>& visited, vector<int>& cycleNodes) {
+    visited[u] = true;
 
     NetworKit::Graph::NeighborRange neighborRange = graph->neighborRange(u);
 
     for (NetworKit::Graph::NeighborIterator neighbor = neighborRange.begin(); neighbor != neighborRange.end(); ++neighbor) {
         int v = *neighbor;
 
-        if (!(*visited)[v]) {
+        if (!visited[v]) {
             if (dfs(graph, v, u, visited, cycleNodes)) {
                 return true;
             }
         } else if (v != parent) {
-            // Found a back edge, indicating a cycle
             cycleNodes.push_back(v);
             cycleNodes.push_back(u);
             return true;
@@ -30,38 +29,33 @@ bool dfs(NetworKit::Graph* graph, int u, int parent, vector<bool> *visited, vect
     return false;
 }
 
-
-vector<int> findCycle(NetworKit::Graph* graph) {
+vector<int> findCycle( NetworKit::Graph* graph) {
     if (!graph) {
-        // Handle the case where the pointer is null
         return {};
     }
 
     vector<int> cycleNodes;
-    vector<bool>* visited = new vector<bool>(graph->numberOfNodes(), false);
-    bool Found = false;
-
-    for (int u = 0; u < graph->numberOfNodes(); ++u) {
-        if (!(*visited)[u]) {
-            if (dfs(graph, u, -1, visited, cycleNodes)) {
-            	Found = true;
-                }
+    vector<bool> visited(graph->numberOfNodes(), false);
+    bool found = false;
+    NetworKit::Graph::NodeRange nodeRange = graph->nodeRange();
+    for (NetworKit::Graph::NodeIterator it = nodeRange.begin(); it != nodeRange.end(); ++it) {
+        if (!visited[*it]) {
+            if (dfs(graph, *it, -1, visited, cycleNodes)) {
+                found = true;
+            }
         }
+        
     }
 
-    for (int node : cycleNodes){
+    
 
-    	cout << node << endl;
+    if (found) {
+        return cycleNodes;
     }
 
-    if (Found){
-    	delete visited;
-    	return cycleNodes;
-	}
-
-    delete visited;
     return {};  
 }
+
 
 /*
 int main() {
