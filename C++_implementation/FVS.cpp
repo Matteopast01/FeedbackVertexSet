@@ -6,6 +6,7 @@
 #include <set>
 #include <string>
 #include "cycle_detection.h"
+#include "GraphReader.h"
 #include "mytimer.h"
 
 using namespace std;
@@ -144,7 +145,7 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 int main(int argc, char** argv) {
  
 	set<int> *F = new set <int>;  
-
+	/*
 	//F->insert(2);
 	NetworKit::Graph* graph = new NetworKit::Graph(15,false,false);
 	
@@ -155,7 +156,7 @@ int main(int argc, char** argv) {
     graph->addEdge(4, 0);
     
    	graph->addEdge(4, 2);
-   	/*
+   	
    
     graph->addEdge(0, 5);
     graph->addEdge(1, 5);
@@ -189,10 +190,12 @@ int main(int argc, char** argv) {
     graph->addEdge(3, 4);
     graph->addEdge(4, 0);
   	*/
-    
-    
+  	 GraphReader graphReader("../public_graphs/050.graph");
 
-	 vector<int> prova = naive_fvs(graph,5, F);
+  	 NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
+  	 NetworKit::Graph *graph = &readGraph;
+   	
+	 vector<int> prova = naive_fvs(graph,10, F);
 	 for (int node : prova){
 	 	cout << node << endl;
 	 }
