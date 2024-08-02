@@ -62,12 +62,14 @@ def naive_fvs(G, k, F):
             if len(neighbors_in_F) == 2:
                 G.removeNode(v)
                 X = naive_fvs(G, k-1, F)
-                return X.union({v})
+                if X != "no":
+                    return X.union({v})
+                else: 
+                    return "no"
 
     max_degree_node, max_degree = provide_node_with_maximum_degree(G, F)
 
     if max_degree == 2:
-        print("ci sto dentro")
         X = set()
         while True:
             cycles = find_cycles(G)
@@ -87,24 +89,25 @@ def naive_fvs(G, k, F):
     if X != "no":
         return X.union({max_degree_node})
     else:
-        F = F.union({max_degree_node})
-        return naive_fvs(G, k, F)
+        return "no"
 
 
 if __name__ == "__main__":
-    G = nk.Graph(14)
+    G = nk.Graph(13)
 
     # Add nodes
-    for i in range(14):
+    for i in range(13):
         G.addNode()
-
+    """
     # Add edges to form cycles
     G.addEdge(0, 1)
     G.addEdge(1, 2)
     G.addEdge(2, 3)
     G.addEdge(3, 4)
     G.addEdge(4, 0)
+    
     G.addEdge(4, 2)
+    
     G.addEdge(0, 5)
     G.addEdge(1, 5)
     G.addEdge(1, 6)
@@ -120,11 +123,25 @@ if __name__ == "__main__":
     G.addEdge(8,12)
     G.addEdge(12,13)
     G.addEdge(5,13)
+    G.addEdge(14,13);
+    G.addEdge(14,12);
+    
+    """
+    G.addEdge(0, 1)
+    G.addEdge(0, 2)
+    G.addEdge(0, 3)
+    G.addEdge(1, 3)
+    G.addEdge(1, 4)
+    G.addEdge(1, 2)
+    G.addEdge(2, 3)
+    G.addEdge(2, 4)
+    G.addEdge(3, 4)
+    G.addEdge(4, 0)
     
 
-    k = 3
+    k = 2
     F = set()
-    #F = F.union({1})
+    F = F.union({3,1})
     fvs = naive_fvs(G, k, F)
 
     print("Feedback Vertex Set:", fvs)
