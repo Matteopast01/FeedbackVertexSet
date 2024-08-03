@@ -1,5 +1,27 @@
 import networkit as nk
 import matplotlib.pyplot as plt
+import threading
+import networkx as nx
+from networkit import graphio
+import sys
+
+def draw_graph(G):
+
+    G1 = nx.Graph()
+
+    for i in range(G.numberOfNodes()):
+        G1.add_node(i)
+
+    for u, v in G.iterEdges():
+        G1.add_edge(u,v)
+
+
+    subax1 = plt.subplot(111)
+    nx.draw(G1, with_labels=True, node_color='skyblue', edge_color='black', node_size=500, font_size=15)
+
+    plt.show()
+    
+
 
 
 def find_cycles(G):
@@ -93,55 +115,19 @@ def naive_fvs(G, k, F):
 
 
 if __name__ == "__main__":
-    G = nk.Graph(13)
 
-    # Add nodes
-    for i in range(13):
-        G.addNode()
-    """
-    # Add edges to form cycles
-    G.addEdge(0, 1)
-    G.addEdge(1, 2)
-    G.addEdge(2, 3)
-    G.addEdge(3, 4)
-    G.addEdge(4, 0)
     
-    G.addEdge(4, 2)
+    #to improve recursion
+    sys.setrecursionlimit(100000)
     
-    G.addEdge(0, 5)
-    G.addEdge(1, 5)
-    G.addEdge(1, 6)
-    G.addEdge(2, 6)
-    G.addEdge(3, 7)
-    G.addEdge(6, 7)
-    G.addEdge(7, 8)
-    G.addEdge(0, 9)
-    G.addEdge(0, 10)
-    G.addEdge(2, 10)
-    G.addEdge(7,11)
-    G.addEdge(8,11)
-    G.addEdge(8,12)
-    G.addEdge(12,13)
-    G.addEdge(5,13)
-    G.addEdge(14,13);
-    G.addEdge(14,12);
-    
-    """
-    G.addEdge(0, 1)
-    G.addEdge(0, 2)
-    G.addEdge(0, 3)
-    G.addEdge(1, 3)
-    G.addEdge(1, 4)
-    G.addEdge(1, 2)
-    G.addEdge(2, 3)
-    G.addEdge(2, 4)
-    G.addEdge(3, 4)
-    G.addEdge(4, 0)
-    
-
-    k = 2
+    reader = graphio.EdgeListReader(" ", 0, "#", True, False)
+    G = reader.read("../public_graphs/037.graph")
+   
+    k = 1000
     F = set()
-    F = F.union({3,1})
+    F = F.union()
     fvs = naive_fvs(G, k, F)
 
     print("Feedback Vertex Set:", fvs)
+    print ("size:" + str(len(fvs)))
+    
