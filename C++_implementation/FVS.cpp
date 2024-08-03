@@ -69,7 +69,6 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 			    if (F->find(*neighbor) != F->end()) {
 			    	neighborCount ++;   
 			    } 
-
 				if (neighborCount == 2){
 					graph->removeNode(*node);
 					myfvs = naive_fvs(graph,k-1,F);
@@ -78,13 +77,12 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 				    	myfvs.push_back(*node);
 						return myfvs;
 				    }
-				    else{
+				    else
+				    {
 
 				    	result->push_back(-1);
 						return *result;
-				    }
-
-							
+				    }				
 				}   		 
 	    	}
     	}       
@@ -93,7 +91,7 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
     vector<int> maximum_degree_information = provide_node_with_maximum_degree(graph, F, nodeRange);
 	if (maximum_degree_information[0] == 2){
 
-		vector<int> nodesCycle;
+		vector<vector<int>> nodesCycle;
 		vector<int> *X = new vector<int>;
 
 		while (true){
@@ -101,10 +99,8 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 			nodesCycle = findCycle(graph);
 			if (nodesCycle.size() == 0){
 				break;
-			}
-			
-			int node = nodesCycle[0];
-			for (int node : nodesCycle){
+			}	
+			for (int node : nodesCycle[0]){
 
 				if (F->find(node) == F->end()){
 
@@ -112,16 +108,13 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 					graph->removeNode(node);
 					break;
 				} 
-	 		
-	 		} 
-			
-			
-
+	 		}		
 		}
 		if (X->size()<=k){
 			return *X;
 		}
-		else {
+		else 
+		{
 			result->push_back(-1);
 			return *result;
 		}
@@ -144,61 +137,18 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
   
 int main(int argc, char** argv) {
  
-	set<int> *F = new set <int>;  
-	/*
-	//F->insert(2);
-	NetworKit::Graph* graph = new NetworKit::Graph(15,false,false);
-	
-	graph->addEdge(0, 1);
-    graph->addEdge(1, 2);
-    graph->addEdge(2, 3);
-    graph->addEdge(3, 4);
-    graph->addEdge(4, 0);
-    
-   	graph->addEdge(4, 2);
-   	
-   
-    graph->addEdge(0, 5);
-    graph->addEdge(1, 5);
-    graph->addEdge(1, 6);
-    graph->addEdge(2, 6);
-    graph->addEdge(3, 7);
-    graph->addEdge(6, 7);
-    graph->addEdge(7, 8);
-    graph->addEdge(0, 9);
-    graph->addEdge(0, 10);
-    graph->addEdge(2, 10);
-    graph->addEdge(7,11);
-    graph->addEdge(8,11);
-    graph->addEdge(8,12);
-    graph->addEdge(12,13);
-    graph->addEdge(5,13);
-    graph->addEdge(14,13);
-    graph->addEdge(14,12);
-    */
-   	
+ 	set<int> *F = new set <int>;  
+  	GraphReader graphReader("../public_graphs/037.graph");
 
-    /*
-    graph->addEdge(0, 1);
-    graph->addEdge(0, 2);
-    graph->addEdge(0, 3);
-    graph->addEdge(1 ,3);
-    graph->addEdge(1, 4);
-    graph->addEdge(1, 2);
-    graph->addEdge(2, 3);
-    graph->addEdge(2, 4);
-    graph->addEdge(3, 4);
-    graph->addEdge(4, 0);
-  	*/
-  	 GraphReader graphReader("../public_graphs/050.graph");
-
-  	 NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
-  	 NetworKit::Graph *graph = &readGraph;
+  	NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
+  	NetworKit::Graph *graph = &readGraph;
    	
-	 vector<int> prova = naive_fvs(graph,10, F);
-	 for (int node : prova){
-	 	cout << node << endl;
-	 }
+	vector<int> prova = naive_fvs(graph,400, F);
+	for (int node : prova){
+		cout << node << endl;
+	}
+
+	cout << "size is:" << prova.size() << endl;
 
 	return 0;  
 }
