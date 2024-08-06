@@ -1,35 +1,36 @@
 import networkit as nk
 import matplotlib.pyplot as plt
-import threading
 import networkx as nx
-from networkit import graphio
 import sys
+import os
+import argparse
+from GraphIO import GraphIO
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from graph_generators.CustomGenerator import CustomGenerator
+from graph_generators.ErdosRenyiGenerator import ErdosRenyiGenerator
+from MyTimer import MyTimer
 
 def draw_graph(G):
-
     G1 = nx.Graph()
 
     for i in range(G.numberOfNodes()):
         G1.add_node(i)
 
     for u, v in G.iterEdges():
-        G1.add_edge(u,v)
-
+        G1.add_edge(u, v)
 
     subax1 = plt.subplot(111)
     nx.draw(G1, with_labels=True, node_color='skyblue', edge_color='black', node_size=500, font_size=15)
 
     plt.show()
-    
-
 
 
 def find_cycles(G):
     cycles = []
 
     def dfs(v, parent, visited, cycle):
-        visited.add(v)
-        cycle.add(v)
+        visited.append(v)
+        cycle.append(v)
 
         for u in G.iterNeighbors(v):
             if u != parent:
@@ -40,10 +41,10 @@ def find_cycles(G):
 
         cycle.remove(v)
 
-    visited = set()
+    visited = []
     for v in G.iterNodes():
         if v not in visited:
-            dfs(v, -1, visited, set())
+            dfs(v, -1, visited, [])
 
     return cycles
 
@@ -69,7 +70,7 @@ def naive_fvs(G, k, F):
         return set()
 
     # Remove vertices with degree less than two
-    for v in list(G.iterNodes()): 
+    for v in list(G.iterNodes()):
         if G.degree(v) < 2:
             G.removeNode(v)
             if v in F:
@@ -78,15 +79,15 @@ def naive_fvs(G, k, F):
 
     # Remove vertices with two neighbors in the same component of G[F]
     for v in list(G.iterNodes()):
-        if v not in F: 
+        if v not in F:
             neighbors = set(G.iterNeighbors(v))
             neighbors_in_F = neighbors.intersection(F)
             if len(neighbors_in_F) == 2:
                 G.removeNode(v)
-                X = naive_fvs(G, k-1, F)
+                X = naive_fvs(G, k - 1, F)
                 if X != "no":
                     return X.union({v})
-                else: 
+                else:
                     return "no"
 
     max_degree_node, max_degree = provide_node_with_maximum_degree(G, F)
@@ -115,19 +116,36 @@ def naive_fvs(G, k, F):
 
 
 if __name__ == "__main__":
-
-    
-    #to improve recursion
-    sys.setrecursionlimit(100000)
-    
-    reader = graphio.EdgeListReader(" ", 0, "#", True, False)
-    G = reader.read("../public_graphs/037.graph")
-   
-    k = 1000
+    sys.setrecursionlimit(1000000)
+    k = 6000
     F = set()
-    F = F.union()
-    fvs = naive_fvs(G, k, F)
+    #F = F.union()
 
-    print("Feedback Vertex Set:", fvs)
-    print ("size:" + str(len(fvs)))
+    parser = argparse.ArgumentParser(description='Process a graph file.')
+    parser.add_argument('--graph', type=str, required=True, help='graph file')
+    args = parser.parse_args()
+    try:
+        graph_reader = GraphIO(f"../public_graphs/{args.graph}")
+        graph = graph_reader.read_edges_format_graph()
+    except FileNotFoundError:
+        print(f"Error: The file '../public_graphs/{args.graph}' was not found.")
+        sys.exit(1)
+
+    """
+    generator = ErdosRenyiGenerator(12000, 0.00024)
+    graph = generator.erdos_renyi_generator()
+    writer = GraphIO("../public_graphs/065 (copy).graph")
+    writer.write_edge_list(graph)
+    """
+    timer = MyTimer()
+    number_edges = graph.numberOfEdges()
+    number_nodes = graph.numberOfNodes()
+    fvs = naive_fvs(graph, k, F)
+    elapsed_time = timer.get_elapsed_time()
     
+    print("Feedback Vertex Set:", fvs)
+    print("Size FVS:", len(fvs))
+    print("number_edges:", number_edges)
+    print("number_nodes:", number_nodes)
+    print("elapsed_time:", elapsed_time)
+   

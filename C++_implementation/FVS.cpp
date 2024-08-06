@@ -10,7 +10,19 @@
 #include "mytimer.h"
 
 using namespace std;
+namespace po = boost::program_options;
 
+void printVector(const vector<int>* vec) {
+    
+    cout << "{";
+    for (size_t i = 0; i < vec->size(); ++i) {
+        cout << (*vec)[i];
+        if (i != vec->size() - 1) {
+            cout << ", ";
+        }
+    }
+    cout << "}" << endl;
+}
 
 vector<int> provide_node_with_maximum_degree (NetworKit::Graph* graph, set<int>* F, NetworKit::Graph::NodeRange nodeRange){
 	int maxDegree = 0;
@@ -99,11 +111,12 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
 			nodesCycle = findCycle(graph);
 			if (nodesCycle.size() == 0){
 				break;
-			}	
+			}
+
 			for (int node : nodesCycle[0]){
 
 				if (F->find(node) == F->end()){
-
+				
 					X->push_back(node);
 					graph->removeNode(node);
 					break;
@@ -137,18 +150,42 @@ vector<int> naive_fvs (NetworKit::Graph* graph, int k, set<int>* F ) {
   
 int main(int argc, char** argv) {
  
- 	set<int> *F = new set <int>;  
-  	GraphReader graphReader("../public_graphs/037.graph");
+ 	set<int> *F = new set <int>;
+ 	po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help", "produce help message")
+        ("graph", po::value<std::string>(), "set graph file");
+
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+    if (vm.count("help")) {
+        cout << desc << endl;
+        return 1;
+    }
+
+    if (!vm.count("graph")) {
+        cerr << "Error: Graph file was not set." << endl;
+        return 1;
+    }
+    string graphName = vm["graph"].as<std::string>();  
+  	GraphReader graphReader("../public_graphs/" + graphName);
 
   	NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
   	NetworKit::Graph *graph = &readGraph;
-   	
-	vector<int> prova = naive_fvs(graph,400, F);
-	for (int node : prova){
-		cout << node << endl;
-	}
+   	mytimer t_counter;
 
-	cout << "size is:" << prova.size() << endl;
+   	int number_edges = graph->numberOfEdges();
+    int number_nodes = graph->numberOfNodes();
+	vector<int> prova = naive_fvs(graph,12000, F);
+	cout << "Feedback Vertex Set: ";
+	printVector(&prova);
+
+	cout << "Size FVS: " << prova.size() << endl;
+	cout << "number_edges: " << number_edges << endl;
+	cout << "number_nodes: " << number_nodes << endl;
+	cout <<"elapsed_time: "<<t_counter.elapsed()<<"\n";
 
 	return 0;  
 }
