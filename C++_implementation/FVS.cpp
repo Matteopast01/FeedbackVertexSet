@@ -154,7 +154,8 @@ int main(int argc, char** argv) {
  	po::options_description desc("Allowed options");
     desc.add_options()
         ("help", "produce help message")
-        ("graph", po::value<std::string>(), "set graph file");
+                ("experiment", po::value<bool>()->default_value(false)->implicit_value(true), "optional experiment flag")
+        ("graph", po::value<string>(), "set graph file");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -169,8 +170,15 @@ int main(int argc, char** argv) {
         cerr << "Error: Graph file was not set." << endl;
         return 1;
     }
+    string graphPath;
+    if (vm["experiment"].as<bool>()) {
+        graphPath = "../experiments/experimental_graphs/";
+    } else {
+        graphPath = "../public_graphs/";
+    }
+
     string graphName = vm["graph"].as<std::string>();  
-  	GraphReader graphReader("../public_graphs/" + graphName);
+  	GraphReader graphReader(graphPath + graphName);
 
   	NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
   	NetworKit::Graph *graph = &readGraph;

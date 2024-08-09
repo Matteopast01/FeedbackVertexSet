@@ -123,20 +123,17 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Process a graph file.')
     parser.add_argument('--graph', type=str, required=True, help='graph file')
+    parser.add_argument('--experiment', action='store_true', help='Use experimental graphs')
     args = parser.parse_args()
-    try:
-        graph_reader = GraphIO(f"../public_graphs/{args.graph}")
-        graph = graph_reader.read_edges_format_graph()
-    except FileNotFoundError:
-        print(f"Error: The file '../public_graphs/{args.graph}' was not found.")
-        sys.exit(1)
+    if args.experiment:
+        graph_path = f"../experiments/experimental_graphs/{args.graph}"
+    else:
+        graph_path = f"../public_graphs/{args.graph}"
 
-    """
-    generator = ErdosRenyiGenerator(12000, 0.00024)
-    graph = generator.erdos_renyi_generator()
-    writer = GraphIO("../public_graphs/065 (copy).graph")
-    writer.write_edge_list(graph)
-    """
+    
+    graph_reader = GraphIO(graph_path)
+    graph = graph_reader.read_edges_format_graph()
+   
     timer = MyTimer()
     number_edges = graph.numberOfEdges()
     number_nodes = graph.numberOfNodes()
