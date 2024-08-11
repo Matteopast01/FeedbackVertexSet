@@ -19,7 +19,7 @@ class DoublingNodeExperiment(Experiment):
         while number_node < self._max_number_node:
             generator = CustomGenerator(number_node, number_node - 1, True)
             graph = generator.custom_generator()
-            graph_name = f"doubling_{number_node}"
+            graph_name = f"doubling_{number_node}.graph"
             my_dict = {"language": "only C++" if number_node > 15000 else "", "graph_name": graph_name}
             self._graph_names.append(my_dict)
             writer = GraphIO(f"experimental_graphs/{graph_name}")

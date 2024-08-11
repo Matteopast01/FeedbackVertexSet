@@ -117,7 +117,7 @@ def naive_fvs(G, k, F):
 
 if __name__ == "__main__":
     sys.setrecursionlimit(1000000)
-    k = 6000
+    k = 20000
     F = set()
     #F = F.union()
 
@@ -140,8 +140,12 @@ if __name__ == "__main__":
     fvs = naive_fvs(graph, k, F)
     elapsed_time = timer.get_elapsed_time()
     
-    print("Feedback Vertex Set:", fvs)
-    print("Size FVS:", len(fvs))
+    if fvs == "no":
+        print(f"There is no FVS of size {k}")
+    else:
+        print("Feedback Vertex Set:", fvs)
+        print("Size FVS:", len(fvs))
+
     print("number_edges:", number_edges)
     print("number_nodes:", number_nodes)
     print("elapsed_time:", elapsed_time)

@@ -183,17 +183,23 @@ int main(int argc, char** argv) {
   	NetworKit::Graph readGraph = graphReader.readEdgesFormatGraph();
   	NetworKit::Graph *graph = &readGraph;
    	mytimer t_counter;
+   	int k = 20000;
+	int number_edges = graph->numberOfEdges();
+	int number_nodes = graph->numberOfNodes();
+	vector<int> prova = naive_fvs(graph, k, F);
 
-   	int number_edges = graph->numberOfEdges();
-    int number_nodes = graph->numberOfNodes();
-	vector<int> prova = naive_fvs(graph,12000, F);
-	cout << "Feedback Vertex Set: ";
-	printVector(&prova);
+	if (std::find(prova.begin(), prova.end(), -1) != prova.end()) {
+	    cout << "Feedback Vertex Set: None" << endl;
+	    cout << "There is no FVS of size " << k << endl;
+	} else {
+	    cout << "Feedback Vertex Set: ";
+	    printVector(&prova);
+	    cout << "Size FVS: " << prova.size() << endl;
+	}
 
-	cout << "Size FVS: " << prova.size() << endl;
 	cout << "number_edges: " << number_edges << endl;
 	cout << "number_nodes: " << number_nodes << endl;
-	cout <<"elapsed_time: "<<t_counter.elapsed()<<"\n";
+	cout << "elapsed_time: " << t_counter.elapsed() << "\n";
 
-	return 0;  
+	return 0;
 }

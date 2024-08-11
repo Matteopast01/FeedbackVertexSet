@@ -1,6 +1,7 @@
 from DoublingNodeExperiment import DoublingNodeExperiment 
 from IncreasingFVSsizeExperiment import IncreasingFVSsizeExperiment
-
+from RandomGraphExperiment import RandomGraphExperiment
+from ValidityTestingExperiment import ValidityTestingExperiment
 if __name__ == '__main__':
     """
     # Create an instance of IncreasingFVSsizeExperiment with a specific output CSV file
@@ -11,6 +12,12 @@ if __name__ == '__main__':
     experiment.run()
     """
 
-    experiment = IncreasingFVSsizeExperiment(200, "improving_fvs_size_results.csv")
+    #experiment = IncreasingFVSsizeExperiment(5000, "improving_fvs_size_results.csv")
+    #experiment.run()
+
+    #experiment = RandomGraphExperiment("random_graphs.csv")
+    #experiment.run()
+
+    experiment = ValidityTestingExperiment("validity_testing.csv")
     experiment.run()
 

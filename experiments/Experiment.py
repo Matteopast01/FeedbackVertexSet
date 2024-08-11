@@ -10,12 +10,12 @@ class Experiment(ABC):
     _results: list
     _output_csv: str
 
-    def __init__(self, output_csv: str):
+    def __init__(self, output_csv):
         self._graph_names = []  # Protected attribute initialized in constructor
         self._results = []  # Protected attribute initialized in constructor
         self._output_csv = output_csv  # Protected attribute initialized in constructor
 
-    def parse_output(self, output: str) -> dict:
+    def parse_output(self, output):
         fvs_pattern = r"Feedback Vertex Set: (\{[^\}]*\})"
         size_pattern = r"Size FVS: (\d+)"
         edges_pattern = r"number_edges: (\d+)"
@@ -29,6 +29,7 @@ class Experiment(ABC):
         time_match = re.search(time_pattern, output)
 
         parsed_data = {
+            "fvs_set": fvs_match.group(1) if fvs_match else "", 
             "size_fvs": int(size_match.group(1)) if size_match else "",
             "number_edges": int(edges_match.group(1)) if edges_match else "",
             "number_nodes": int(nodes_match.group(1)) if nodes_match else "",
@@ -36,7 +37,7 @@ class Experiment(ABC):
         }
         return parsed_data
 
-    def execute_and_retrieve_data(self, language: str, graph_name: str, number_repetitions: int) -> list:
+    def execute_and_retrieve_data(self, language, graph_name, number_repetitions):
         trials = []
 
         if language == "python":

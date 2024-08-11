@@ -17,10 +17,6 @@ debug:
 release:
 	$(foreach var,$(TARGETS),$(CXX) $(OPT) -o $(var) -I$(INCLUDEPATH) -L$(PATHLIB) $(var).cpp Cycle_detection.cpp GraphReader.cpp $(OPTIONS);)
 
-valgrind:
-	$(foreach var,$(TARGETS),$(CXX) $(VALGRIND) -o $(var) -I$(INCLUDEPATH) -L$(PATHLIB) $(var).cpp Cycle_detection.cpp GraphReader.cpp $(OPTIONS);)
-
-
 clean:
 	$(foreach var,$(TARGETS),rm -rf $(var);)
 
