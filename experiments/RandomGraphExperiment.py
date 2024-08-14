@@ -7,15 +7,23 @@ from python_implementation.GraphIO import GraphIO
 import random
 
 class RandomGraphExperiment(Experiment):
+    _min_number_nodes : int 
+    _max_number_nodes : int  
+    _min_p : float 
+    _max_p : float 
   
 
-    def __init__(self, output_csv):
+    def __init__(self, output_csv, min_number_nodes, max_number_nodes, min_p, max_p):
         super().__init__(output_csv)
+        self._min_number_nodes = min_number_nodes
+        self._max_number_nodes = max_number_nodes
+        self._min_p = min_p
+        self._max_p = max_p
     
     def generate_graphs(self):
-        for i in range(5):
-            number_node = random.randint(5000, 14999)
-            p = random.uniform(0.005, 0.1)
+        for i in range(4):
+            number_node = random.randint(self._min_number_nodes, self._max_number_nodes)
+            p = random.uniform(self._min_p, self._max_p)
             generator = ErdosRenyiGenerator(number_node, p)
             graph = generator.erdos_renyi_generator()
             graph_name = f"random_graph{i}.graph"

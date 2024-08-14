@@ -5,15 +5,15 @@ import statistics
 from abc import ABC, abstractmethod
 
 class Experiment(ABC):
-    # Define protected attributes
+    
     _graph_names: list
     _results: list
     _output_csv: str
 
     def __init__(self, output_csv):
-        self._graph_names = []  # Protected attribute initialized in constructor
-        self._results = []  # Protected attribute initialized in constructor
-        self._output_csv = output_csv  # Protected attribute initialized in constructor
+        self._graph_names = []  
+        self._results = []  
+        self._output_csv = output_csv  
 
     def parse_output(self, output):
         fvs_pattern = r"Feedback Vertex Set: (\{[^\}]*\})"
@@ -70,7 +70,7 @@ class Experiment(ABC):
             self._results.append(self.execute_and_retrieve_data("c++", graph["graph_name"], 3))
 
     def save_test_results(self):
-        with open(self._output_csv, 'w', newline='') as csvfile:
+        with open(f"experimental_results/{self._output_csv}", 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(["Language", "Graph Name", "Size FVS", "Number of Edges", "Number of Nodes", "Avg Elapsed Time", "Std Elapsed Time"])
             writer.writerows(self._results)

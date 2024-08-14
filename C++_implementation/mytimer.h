@@ -1,10 +1,3 @@
-/*
- * mytimer.h
- *
- *  Created on: 29 giu 2017
- *      Author: anonym
- */
-
 #ifndef MYTIMER_H_
 #define MYTIMER_H_
 

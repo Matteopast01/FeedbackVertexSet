@@ -53,7 +53,7 @@ class ValidityTestingExperiment(Experiment):
         pass
 
     def save_test_results(self):
-        with open(self._output_csv, 'w', newline='') as csvfile:
+        with open(f"experimental_results/{self._output_csv}", 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(["Language", "Graph Name", "Size FVS", "FVS set", "Number of Edges", "Number of Nodes", "Avg Elapsed Time"])
             writer.writerows(self._results)
