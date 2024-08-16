@@ -45,6 +45,7 @@ def find_cycles(G):
     for v in G.iterNodes():
         if v not in visited:
             dfs(v, -1, visited, [])
+    assert len(cycles) < G.numberOfNodes()
 
     return cycles
 
@@ -59,7 +60,7 @@ def provide_node_with_maximum_degree(G, F):
             if degree > max_degree:
                 max_degree = degree
                 max_degree_node = node
-
+    assert max_degree >= 0
     return max_degree_node, max_degree
 
 
@@ -106,7 +107,7 @@ def naive_fvs(G, k, F):
             return X
         else:
             return "no"
-
+    assert max_degree_node >= 0
     G.removeNode(max_degree_node)
     X = naive_fvs(G, k - 1, F)
     if X != "no":
