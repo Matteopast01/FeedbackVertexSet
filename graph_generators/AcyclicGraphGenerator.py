@@ -1,7 +1,5 @@
 import networkit as nk
-from random import choice, randint
-import networkx as nx
-import matplotlib.pyplot as plt
+import random
 
 class AcyclicGraphGenerator:
     _number_nodes: int
@@ -12,9 +10,9 @@ class AcyclicGraphGenerator:
 
     def generate(self):
         generator = nk.generators.ErdosRenyiGenerator(self._number_nodes + 100, 0.1)
-        start_node = random.choice(range(dense_graph.numberOfNodes()))
         dense_graph = generator.generate()
-        if dense_graph.numberOfNodes() < n:
+        start_node = random.choice(range(dense_graph.numberOfNodes()))
+        if dense_graph.numberOfNodes() < dense_graph.numberOfNodes():
             raise ValueError("The graph does not have enough nodes to extract a spanning tree.")
         visited = [False] * dense_graph.numberOfNodes()
         spanning_tree_edges = []
@@ -24,7 +22,7 @@ class AcyclicGraphGenerator:
         node_mapping = {start_node: 0}  # Mapping of original node to new node index
         node_index = 1  # Start indexing for new nodes
 
-        while bfs_queue and nodes_in_tree < num_nodes:
+        while bfs_queue and nodes_in_tree < self._number_nodes:
             u = bfs_queue.pop(0)
             for v in dense_graph.iterNeighbors(u):
                 if not visited[v]:
@@ -34,11 +32,11 @@ class AcyclicGraphGenerator:
                     node_mapping[v] = node_index
                     node_index += 1
                     nodes_in_tree += 1
-                    if nodes_in_tree >= num_nodes:
+                    if nodes_in_tree >= self._number_nodes:
                         break
         
         # Create a new graph for the spanning tree
-        spanning_tree = nk.graph.Graph(num_nodes, weighted=False, directed=False)
+        spanning_tree = nk.graph.Graph(self._number_nodes, weighted=False, directed=False)
         
         # Add edges to the spanning tree with the new node indices
         for u, v in spanning_tree_edges:

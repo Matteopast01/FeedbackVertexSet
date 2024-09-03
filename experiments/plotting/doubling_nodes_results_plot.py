@@ -15,7 +15,7 @@ plt.xlabel('Number of Nodes')
 plt.ylabel('Average Elapsed Time (seconds)')
 plt.title('Python:')
 plt.ylim(python_data['Avg Elapsed Time'].min(), python_data['Avg Elapsed Time'].max())  # Auto-adjust y-axis to data range
-plt.show()
+plt.savefig('python_plot.png')  # Save plot to file
 
 # Plot for C++
 plt.figure(figsize=(10, 6))
@@ -24,4 +24,4 @@ plt.xlabel('Number of Nodes')
 plt.ylabel('Average Elapsed Time (seconds)')
 plt.title('C++:')
 plt.ylim(cpp_data['Avg Elapsed Time'].min(), cpp_data['Avg Elapsed Time'].max())  # Auto-adjust y-axis to data range
-plt.show()
+plt.savefig('cpp_plot.png')  # Save plot to file

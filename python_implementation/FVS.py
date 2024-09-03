@@ -6,8 +6,6 @@ import os
 import argparse
 from GraphIO import GraphIO
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from graph_generators.CustomGenerator import CustomGenerator
-from graph_generators.ErdosRenyiGenerator import ErdosRenyiGenerator
 from MyTimer import MyTimer
 
 def draw_graph(G):
