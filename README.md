@@ -1,6 +1,6 @@
 Algorithm Engineering Project:
 
-This repository contains an implementation of an algorithm for finding a minimum feedback vertex set, of size almosto k, in undirected graphs, as described in the paper  [link](https://drops.dagstuhl.de/storage/01oasics/oasics-vol061_sosa2018/OASIcs.SOSA.2018.1/OASIcs.SOSA.2018.1.pdf). The algorithm is implemented in both Python and C++, and includes validation testing to ensure correctness. Additionally, the time complexity of the implementations is evaluated, with a comparison between the two programming languages.
+This repository contains an implementation of an algorithm for finding a minimum feedback vertex set, of size almost k, in undirected graphs, as described in the paper  [link](https://drops.dagstuhl.de/storage/01oasics/oasics-vol061_sosa2018/OASIcs.SOSA.2018.1/OASIcs.SOSA.2018.1.pdf). The algorithm is implemented in both Python and C++, and includes validation testing to ensure correctness. Additionally, the time complexity of the implementations is evaluated, with a comparison between the two programming languages.
 
 Installation steps for running python implementation (Debian based OS):
 
